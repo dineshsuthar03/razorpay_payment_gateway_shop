@@ -1,3 +1,4 @@
 django
 razorpay
 python-dotenv
+gunicorn
