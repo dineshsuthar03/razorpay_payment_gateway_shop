@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-&7taxvs!p-gu7%ml*mn0brsr%2l8t+lp18qh566r%-@+hf1bk_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['razorpay-payment-gateway-shop.onrender.com']
 
 
 # Application definition
