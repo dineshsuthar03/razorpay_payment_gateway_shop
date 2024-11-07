@@ -1,6 +1,8 @@
 Django Razorpay Integration
 This is a simple Django project that demonstrates how to integrate Razorpay's payment gateway to process payments securely. Users can make payments using Razorpay, and after a successful transaction, they are redirected to a thank-you page.
 
+URL -  https://razorpay-payment-gateway-shop.onrender.com
+
 Features
 Razorpay payment gateway integration for secure payments.
 Order processing with product ID, quantity, and price.
