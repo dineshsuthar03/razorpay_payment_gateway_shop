@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Order Processing | Razorpay Payments</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6772e5;
+            --secondary: #32325d;
+            --success: #24b47e;
+            --background: #f6f9fc;
+            --card-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--background);
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(120deg, var(--primary), #7795f8);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 1s;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            animation: fadeInUp 1s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e6e6e6;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+        }
+
+        .test-cards {
+            background: #f8faff;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .test-cards h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .test-cards ul {
+            list-style: none;
+        }
+
+        .test-cards li {
+            padding: 0.5rem 0;
+            color: #525f7f;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .test-cards li:before {
+            content: "💳";
+            margin-right: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #525f7f;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .price-display {
+            font-size: 2rem;
+            color: var(--primary);
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .loading:after {
+            content: "...";
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: "."; }
+            40% { content: ".."; }
+            60%, 100% { content: "..."; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Secure Order Processing</h1>
+            <p>Fast, secure payments powered by Razorpay</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <form id="product-form" method="POST">
+                <div class="test-instructions">
+                    <h3>Test Mode Active</h3>
+                    <p>Use the following test card details to simulate a payment:</p>
+                    <ul>
+                        <li>Card Number: 4111 1111 1111 1111</li>
+                        <li>Expiry Date: 12/34</li>
+                        <li>CVV: 123</li>
+                    </ul>
+                    <p>When prompted for an OTP, enter any random 6-digit number.</p>
+                </div>
+                
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="product_id">Product ID</label>
+                    <input type="text" id="product_id" name="product_id" value="12345" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Price (INR)</label>
+                    <input type="number" id="amount" name="amount" value="2000" step="0.01" min="1" required>
+                </div>
+
+                <div class="price-display">
+                    Total: ₹<span id="total-price">2000</span>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Proceed to Secure Payment
+                </button>
+
+                <div class="loading">Processing your request...</div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Created with ❤️ by <a href="http://dineshsuthar.com" target="_blank">dineshsuthar.com</a></p>
+            <p>&copy; 2024 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        const form = document.getElementById('product-form');
+        const loading = document.querySelector('.loading');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const totalPriceDisplay = document.getElementById('total-price');
+
+        form.addEventListener('input', function(e) {
+            if (e.target.id === 'quantity' || e.target.id === 'amount') {
+                const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+                const amount = parseFloat(document.getElementById('amount').value) || 0;
+                totalPriceDisplay.textContent = (quantity * amount).toFixed(2);
+            }
+        });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            loading.style.display = 'block';
+            submitButton.disabled = true;
+            submitButton.textContent = 'Processing...';
+
+            try {
+                const productId = document.getElementById('product_id').value;
+                const quantity = document.getElementById('quantity').value;
+                const amountInRupees = document.getElementById('amount').value;
+                const amountInPaise = Math.round(amountInRupees * 100);
+
+                const response = await fetch('/create_checkout_session/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity,
+                        amount: amountInPaise
+                    })
+                });
+
+                const session = await response.json();
+                const options = {
+                    key: "{{ razorpay_key }}",
+                    amount: amountInPaise,
+                    currency: "INR",
+                    name: "Order Payment",
+                    description: `Order ${productId}`,
+                    order_id: session.id,
+                    handler: function(response) {
+                        window.location.href = `/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}`;
+                    },
+                    prefill: {
+                        name: "Customer",
+                        email: "customer@example.com"
+                    }
+                };
+
+                const razorpay = new Razorpay(options);
+                razorpay.open();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error processing your payment. Please try again.');
+            } finally {
+                loading.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Proceed to Secure Payment';
+            }
+        });
+    </script>
+</body>
+</html>

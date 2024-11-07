@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success | Thank You</title>
+    
+    <style>
+        :root {
+            --primary: #24b47e;
+            --secondary: #32325d;
+            --background: #f6f9fc;
+            --card-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--background);
+            color: var(--secondary);
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            animation: fadeInUp 0.5s;
+        }
+
+        .success-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: white;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s 0.2s both;
+        }
+
+        p {
+            color: #525f7f;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.5s 0.3s both;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e6e6e6;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--primary);
+            animation: fillProgress 5s linear forwards;
+        }
+
+        .redirect-text {
+            font-size: 0.8rem;
+            color: #8898aa;
+            margin-top: 1rem;
+            animation: fadeIn 0.5s 0.4s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fillProgress {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        .order-number {
+            background: #f8faff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin: 1rem 0;
+            animation: fadeIn 0.5s 0.3s both;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #1a8f62;
+        }
+    </style>
+    <!-- JavaScript to handle redirection after 5 seconds -->
+    <script>
+        setTimeout(function() {
+            window.location.href = "{% url 'index' %}";
+        }, 5000);
+    </script>
+</head>
+<body>
+    <div class="success-card">
+        <div class="success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase. Your order has been processed successfully.</p>
+        
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="redirect-text">Redirecting you back to the homepage...</div>
+        
+        <a href="{% url 'index' %}" class="back-link">Return to Homepage</a>
+    </div>
+</body>
+</html>
